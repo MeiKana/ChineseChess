@@ -10,6 +10,9 @@ public class Game {
     }
 
     public static void standardInit(Board board) {
+
+        clearBoard(board);
+
         //initial pos of generals/kings (帅)
         generatePiece(board, true, 0, 4, 0);
         generatePiece(board, false,0, 4, 9);
@@ -105,6 +108,8 @@ public class Game {
         generatePiece(board, isRed, typeId, last_X,last_Y);
         generatePiece(board,!isRed,eatenId,current_X,current_Y);
         board.logPointer--;
+        if(board.red_win || board.black_win)
+            board.red_win = board.black_win = false;
     }
 
     public static void jumpBackTo (Board board, int turn){
@@ -114,6 +119,14 @@ public class Game {
             for (int i = 0;i < (board.logPointer - turn); i++ )
                 unDo(board);
             board.logPointer = turn;
+        }
+    }
+
+    public static void clearBoard(Board board){
+        for (int i = 0; i < board.board.length;i++){
+            for (int j = 0; j < board.board[0].length;j++){
+                board.board[i][j].isEmpty = true;
+            }
         }
     }
 }

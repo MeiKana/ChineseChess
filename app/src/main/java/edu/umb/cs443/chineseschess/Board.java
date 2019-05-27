@@ -1,6 +1,7 @@
 package edu.umb.cs443.chineseschess;
 
 
+import edu.umb.cs443.chineseschess.piece.General;
 import edu.umb.cs443.chineseschess.piece.Piece;
 
 public class Board
@@ -22,6 +23,9 @@ public class Board
     int[][] log;
     int logPointer;
 
+    boolean red_win;
+    boolean black_win;
+
     public Board()
     {
         board = new Piece[9][10];
@@ -39,6 +43,8 @@ public class Board
 
 
          logPointer = 0;
+         black_win = false;
+         red_win = false;
     }
 
     public boolean isIn (int X, int Y)
@@ -52,7 +58,10 @@ public class Board
         int eatenId = -1; // id of piece has been eaten, -1 means no piece has be eaten.
         if (isEaten) // if eating action happen, record the piece id of who being eat.
             eatenId = board[new_p.X][new_p.Y].id;
-
+        if(board[new_p.X][new_p.Y] instanceof General && board[new_p.X][new_p.Y].isRed && !board[new_p.X][new_p.Y].isEmpty)
+            black_win = true;
+        else if (board[new_p.X][new_p.Y] instanceof General && !board[new_p.X][new_p.Y].isRed && !board[new_p.X][new_p.Y].isEmpty)
+            red_win = true;
         //update position for the board.
         board[new_p.X][new_p.Y] = new_p;
         board[old_X][old_Y] = new Piece(old_X, old_Y);
